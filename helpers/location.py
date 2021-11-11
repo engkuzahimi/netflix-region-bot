@@ -3,6 +3,7 @@ import requests
 from netflix import API_KEY
 from collections import OrderedDict
 import json
+import package.netflix
 
 locations_test = {0: {'country': 'Malaysia'}, 1: {'country': 'France '}, 2: {'country': 'Australia '}, 3: {'country': 'Belgium '}, 4: {'country': 'Canada '}}
 
@@ -101,4 +102,3 @@ hello = location_to_coordinates(locations_test)
 
 hello = calculate_distance(hello)
 
-print(hello)

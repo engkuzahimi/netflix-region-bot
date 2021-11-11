@@ -2,6 +2,8 @@ import requests
 import json
 from collections import defaultdict
 from requests.api import request
+import re
+import location
 
 
 API_KEY = "721f790d5amsh9617c03735fbb05p19f25bjsne3545c09a53a"
@@ -16,7 +18,8 @@ headers = {
 def get_title (title):
     querystring = {
         "query" : title,
-        "orderby": "rating"
+        "orderby": "rating",
+        "limit": 10
     }
     response = requests.request("GET", API_URL + "search", headers=headers, params=querystring)
 
@@ -27,10 +30,14 @@ def get_title (title):
     results = defaultdict(dict)
 
     for i in range(len(jsoned)):
-        results[i]['nfid'] = jsoned[i]['nfid']
-        results[i]['title'] = jsoned[i]['id']
-        results[i]['img'] = jsoned[i]['img']
-        results[i]['synopsis'] = jsoned[i]['synopsis']
+        g = None
+        g = re.search(title, jsoned[i]['title'], re.IGNORECASE)
+        if (g != None):
+            results[0]['nfid'] = jsoned[i]['nfid']
+            results[0]['title'] = jsoned[i]['title']
+            results[0]['img'] = jsoned[i]['img']
+            results[0]['synopsis'] = jsoned[i]['synopsis']
+            break
     
     return results
 
@@ -56,5 +63,7 @@ def get_title_location(netflix_id):
     
 
 
+tajuk = get_title("parks and recreation")
+print(tajuk)
 
-#print(get_title_location("80025172"))
+tajuk = get_title_location(tajuk[0]['nfid'])
